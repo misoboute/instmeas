@@ -25,6 +25,21 @@ MOV_R_I64: 0.381724
 Finished measurement!
 ```
 
+This is the output of the code run on the processor 
+_Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz_:
+
+```
+Beginning measurement...
+
+IDIV_R64: 17.3174
+XOR_R_R64: 0.393541
+MOV_R_I64: 0.432236
+INC_R64: 0.744101
+INC_R64: 0.740852
+
+Finished measurement!
+```
+
 This is the output of the code run on an unknown processor on 
 [onlinegdb](https://onlinegdb.com/Sg_CnU8eWQ):
 
