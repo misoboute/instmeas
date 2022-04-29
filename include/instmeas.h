@@ -48,6 +48,19 @@
     INSTRUCTION_MEASUREMENT_REPEAT_256(INST) \
     INSTRUCTION_MEASUREMENT_REPEAT_256(INST)
 
+// By default each instruction listing is repeated 1024 before being 
+// surrounded by timing markers. Then the measured time is divided by 1024
+// to compute the average time for each single run of the listing.
+// To disable this repetition, define this macro before including the header.
+#ifdef INSTRUCTION_MEASUREMENT_NO_REPEAT_LISTING
+#define INSTRUCTION_MEASUREMENT_INSERT_LISTING(X) X "\n\t"
+#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS 1
+#else
+#define INSTRUCTION_MEASUREMENT_INSERT_LISTING(X) \
+    INSTRUCTION_MEASUREMENT_REPEAT_1024(X)
+#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS 1024
+#endif
+
 #define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, CLOBBER,    \
     MEMSIZE1, MEMSIZE2)    \
 float InstructionMeasurementFunc##NAME()                                \
@@ -69,7 +82,7 @@ float InstructionMeasurementFunc##NAME()                                \
         asm volatile (                                                  \
             INSTRUCTION_MEASUREMENT_MARK_START                          \
             /* Instructions to measure start here */                    \
-            INSTRUCTION_MEASUREMENT_REPEAT_1024(INST_TEMPLATE)          \
+            INSTRUCTION_MEASUREMENT_INSERT_LISTING(INST_TEMPLATE)       \
             /* Instructions to measure end here */                      \
             INSTRUCTION_MEASUREMENT_MARK_END                            \
             : "=r" (ticks), [mem1] "=m" (mem1), [mem2] "=m" (mem2)      \
@@ -77,7 +90,8 @@ float InstructionMeasurementFunc##NAME()                                \
             : "rax", "rdx" CLOBBER);                                    \
         totalTicks += ticks;                                            \
     }                                                                   \
-    return static_cast<float>(totalTicks) / numMeasurements / 1024;     \
+    return static_cast<float>(totalTicks) / numMeasurements /           \
+        INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS;                       \
 }
 
 #define INSTRUCTION_MEASUREMENT_DO(NAME)   \
