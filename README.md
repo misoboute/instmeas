@@ -31,24 +31,34 @@ _Intel(R) Core(TM) i7-4870HQ CPU @ 2.50GHz_:
 ```
 Beginning measurement...
 
-IDIV_R64: 17.3174
-XOR_R_R64: 0.393541
-MOV_R_I64: 0.432236
-INC_R64: 0.744101
-INC_R64: 0.740852
+IDIV_R64:    18.47
+XOR_R_R64:    0.35
+MOV_R_I64:    0.30
+INC_R64:      0.87
+DEC_R64:      0.87
+INC_M64:      4.83
+DEC_M64:      5.14
+INC_M32:      5.22
+DEC_M32:      5.21
 
 Finished measurement!
 ```
 
 This is the output of the code run on an unknown processor on 
-[onlinegdb](https://onlinegdb.com/Sg_CnU8eWQ):
+[onlinegdb](https://onlinegdb.com/Qh7s4DUk2U):
 
 ```
 Beginning measurement...
 
-IDIV_R64: 21.5383
-XOR_R_R64: 0.298239
-MOV_R_I64: 0.422997
+IDIV_R64:    25.98
+XOR_R_R64:    0.38
+MOV_R_I64:    0.45
+INC_R64:      0.75
+DEC_R64:      0.78
+INC_M64:      3.93
+DEC_M64:      6.10
+INC_M32:      4.02
+DEC_M32:      4.03
 
 Finished measurement!
 ```
@@ -59,9 +69,15 @@ This is the output of the code run on an unknown processor on
 ```
 Beginning measurement...
 
-IDIV_R64: 22.4963
-XOR_R_R64: 0.321119
-MOV_R_I64: 0.373963
+IDIV_R64:    16.26
+XOR_R_R64:    0.21
+MOV_R_I64:    0.34
+INC_R64:      0.89
+DEC_R64:      0.86
+INC_M64:      6.09
+DEC_M64:      5.90
+INC_M32:      6.06
+DEC_M32:      6.00
 
 Finished measurement!
 ```
