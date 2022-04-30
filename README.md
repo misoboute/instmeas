@@ -152,22 +152,37 @@ equal to the differece of the two measurements. The function
 ## More Details
 Each measurement definition takes an assembly listing as input, repeats the
 listing _2 ^ 14_ times, surrounds the repeated listing by two CPU time 
-measurements (using `RDTSC`), and calculates the CPU time difference. To 
-disable the repetition of the listing before inserting it between the timing
-fences, define the macro `INSTRUCTION_MEASUREMENT_NO_REPEAT_LISTING` before 
-including the header. Then, the whole cycle of measuring CPU time for the 
+measurements (using `RDTSC`), and calculates the CPU time difference. 
+Then, the whole cycle of measuring CPU time for the 
 repeated listing is executed _2 ^ 14_ times adding the runtime of each cycle 
-to a sum. Also, during each cycle, an empty set of timing fences. That is, in 
+to a sum.
+
+During each cycle, an empty set of timing fences is added and measured to be
+subtracted from the sum as the timing overhead. That is, in 
 each cycle, apart from the actual measurement operation (mark start time, run
 the repeated listing, mark end time), we also execute all the 
 instructions that are required for the measurement only. We take this to be
 the measurement overhead in each cycle. Therefore, during each cycle we
-subtract the overhead measurement from the total sum. This means that the 
-original listing is run 2 ^ 28 times. The final sum is divided by this number to 
+subtract the overhead measurement from the total sum.
+
+This means that when the loop is finished running, the original 
+listing has run 2 ^ 28 times. The final sum is divided by this number to 
 yield a floating point value denoting the average number of CPU cycles that
-the listing takes. Also to change the number of times to run the measurement
+the listing takes.
+
+To disable the repetition of the listing before inserting it between the timing
+fences or change the number of times you want the listing to be repeated,
+define the macro `INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS` and set it to `1`
+(to disable the repetition) or another power of power of 2 (up to and including 
+2 ^ 20) before including the header. Take care if you change this value. 
+Higher values for this number make both the compile time and the runtime 
+exponentially longer!
+
+Likewise, to change the number of times to run the measurement
 cycle, define the macro `INSTRUCTION_MEASUREMENT_NUM_RUN_REPS` to the desired
-value before including the header.
+value before including the header. This number is also recommended to be 
+a power of two. Higher values for this macro could lead to exponentially 
+longer runtimes.
 
 When adding new measurement definitions using the 
 `INSTRUCTION_MEASUREMENT_DEFINE` macro, three arguments are needed. The first 
