@@ -91,11 +91,16 @@
 #define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1024 * 16)
 #endif
 
+#ifndef INSTRUCTION_MEASUREMENT_NUM_RUN_REPS
+#define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (16 * 1024)
+#endif
+
 #define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, CLOBBER,    \
     MEMSIZE1, MEMSIZE2)                                                 \
 float InstructionMeasurementFunc##NAME()                                \
 {                                                                       \
-    constexpr const int64_t numMeasurements = 16 * 1024;                 \
+    constexpr const int64_t numMeasurements =                           \
+        INSTRUCTION_MEASUREMENT_NUM_RUN_REPS;                           \
     int64_t totalTicks = 0;                                             \
     char mem1[MEMSIZE1] { 0 };                                          \
     char mem2[MEMSIZE2] { 0 };                                          \

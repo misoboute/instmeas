@@ -80,7 +80,7 @@ DEC_M32:      4.55
 Finished measurement!
 ```
 
-### Sample 3
+### Sample 4
 On [godbolt](https://godbolt.org/):
 
 ```
@@ -151,13 +151,23 @@ equal to the differece of the two measurements. The function
 
 ## More Details
 Each measurement definition takes an assembly listing as input, repeats the
-listing 1024 times, surrounds the repeated listing by two CPU time 
-measurements (using `RDTSC`), and calculates the CPU time difference. Then, 
-whole cycle of measuring CPU time for the repeated listing is run 1024 times
-adding the runtime of each cycle to a sum. This means that the original 
-listing is run 1024 * 1024 times. The final sum is divided by this number to 
+listing _2 ^ 14_ times, surrounds the repeated listing by two CPU time 
+measurements (using `RDTSC`), and calculates the CPU time difference. To 
+disable the repetition of the listing before inserting it between the timing
+fences, define the macro `INSTRUCTION_MEASUREMENT_NO_REPEAT_LISTING` before 
+including the header. Then, the whole cycle of measuring CPU time for the 
+repeated listing is executed _2 ^ 14_ times adding the runtime of each cycle 
+to a sum. Also, during each cycle, an empty set of timing fences. That is, in 
+each cycle, apart from the actual measurement operation (mark start time, run
+the repeated listing, mark end time), we also execute all the 
+instructions that are required for the measurement only. We take this to be
+the measurement overhead in each cycle. Therefore, during each cycle we
+subtract the overhead measurement from the total sum. This means that the 
+original listing is run 2 ^ 28 times. The final sum is divided by this number to 
 yield a floating point value denoting the average number of CPU cycles that
-the listing takes.
+the listing takes. Also to change the number of times to run the measurement
+cycle, define the macro `INSTRUCTION_MEASUREMENT_NUM_RUN_REPS` to the desired
+value before including the header.
 
 When adding new measurement definitions using the 
 `INSTRUCTION_MEASUREMENT_DEFINE` macro, three arguments are needed. The first 
