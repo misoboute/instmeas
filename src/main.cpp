@@ -54,6 +54,7 @@ int main()
     COUT_MEASURE(DEC_M64);
     COUT_MEASURE(INC_M32);
     COUT_MEASURE(DEC_M32);
+    COUT_MEASURE(FSQRT);
 
     std::cout << "\nFinished measurement!" << std::endl;
     return 0;

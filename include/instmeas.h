@@ -109,8 +109,8 @@ float InstructionMeasurementFunc##NAME()                                \
     constexpr const int64_t numMeasurements =                           \
         INSTRUCTION_MEASUREMENT_NUM_RUN_REPS;                           \
     int64_t totalTicks = 0;                                             \
-    char mem1[MEMSIZE1] { 0 };                                          \
-    char mem2[MEMSIZE2] { 0 };                                          \
+    alignas(16) char mem1[MEMSIZE1] { 0 };                              \
+    alignas(16) char mem2[MEMSIZE2] { 0 };                              \
     for (auto i = 0; i < numMeasurements; ++i)                          \
     {                                                                   \
         uint64_t ticks = 0;                                             \

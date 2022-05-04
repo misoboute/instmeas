@@ -19,15 +19,16 @@ _Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz_, Windows 10, clang 12
 ```
 Beginning measurement...
 
-IDIV_R64:    20.33
+IDIV_R64:    20.06
 XOR_R_R64:    0.27
-MOV_R_I64:    0.31
+MOV_R_I64:    0.32
 INC_R64:      0.85
 DEC_R64:      0.85
-INC_M64:      4.62
-DEC_M64:      4.64
+INC_M64:      4.68
+DEC_M64:      4.66
 INC_M32:      4.66
-DEC_M32:      4.64
+DEC_M32:      4.65
+FSQRT:        3.38
 
 Finished measurement!
 ```
@@ -60,7 +61,7 @@ Finished measurement!
 ```
 
 ### Sample 3
-On [onlinegdb](https://onlinegdb.com/ukpcDivEM):
+On [onlinegdb](https://onlinegdb.com/ZbF7Av0hyU):
 
 ```
 Processor #0 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
@@ -73,15 +74,16 @@ Processor #6 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
 Processor #7 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
 Beginning measurement...
 
-IDIV_R64:    20.43
-XOR_R_R64:    0.26
-MOV_R_I64:    0.31
-INC_R64:      0.83
+IDIV_R64:    20.56
+XOR_R_R64:    0.27
+MOV_R_I64:    0.30
+INC_R64:      0.85
 DEC_R64:      0.83
 INC_M64:      4.54
-DEC_M64:      4.54
-INC_M32:      4.54
-DEC_M32:      4.55
+DEC_M64:      4.56
+INC_M32:      4.55
+DEC_M32:      4.58
+FSQRT:        4.10
 
 Finished measurement!
 ```
@@ -107,10 +109,35 @@ DEC_M32:     11.90
 Finished measurement!
 ```
 
-If these sample results should mean anything at all, it's that Intel processors
-are more efficient in integer arithmetics than AMD. Or it might be only due 
-to the fact that the intel processors have 8 cores while the AMD processors
-have only two.
+### Sample 5
+On [godbolt](https://godbolt.org/):
+
+```
+Processor #0 model name: Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz
+Processor #1 model name: Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz
+Beginning measurement...
+
+IDIV_R64:    45.95
+XOR_R_R64:    0.28
+MOV_R_I64:    0.34
+INC_R64:      6.49
+DEC_R64:      0.89
+INC_M64:     10.44
+DEC_M64:      5.90
+INC_M32:      9.47
+DEC_M32:     10.44
+FSQRT:        3.97
+
+Finished measurement!
+```
+
+It might not be easy to interpret these results. One could infer that,
+more CPU cores allow the CPU to interleave execution of instructions that don't
+depend on one another and perform them faster. This can be seen from smaller
+measurement results for CPUs with 8-12 cores than those with only two. This 
+effect might be countered by removing listing repetitions. This way, the 
+concurrency fences at the beginning and end of each run cycle might help.
+We can increase the number of run repetitions to get a better average instead.
 
 ## Details
 The functions that measure the runtime of a single CPU instruction are declared 
