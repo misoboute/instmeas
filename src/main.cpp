@@ -4,10 +4,15 @@
 #include <regex>
 #include <sstream>
 
+// Uncommment the following lines to disable listing repetition
+// #define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS 1
+// #define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 24)
+
 #include "libinstmeas.h"
 
 #define COUT_MEASURE(X) std::cout << std::setw(12) << std::left << #X ":" \
-    << std::setprecision(2) << std::fixed << std::setw(6) << std::right << X() << "\n"
+    << std::setprecision(2) << std::fixed << std::setw(6) << std::right << X() \
+    << "\n"
 
 void DumpCPUInfo()
 {
