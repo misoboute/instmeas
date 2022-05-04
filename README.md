@@ -19,9 +19,15 @@ _Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz_, Windows 10, clang 12
 ```
 Beginning measurement...
 
-IDIV_R64: 19.8942
-XOR_R_R64: 0.275042
-MOV_R_I64: 0.381724
+IDIV_R64:    20.33
+XOR_R_R64:    0.27
+MOV_R_I64:    0.31
+INC_R64:      0.85
+DEC_R64:      0.85
+INC_M64:      4.62
+DEC_M64:      4.64
+INC_M32:      4.66
+DEC_M32:      4.64
 
 Finished measurement!
 ```
