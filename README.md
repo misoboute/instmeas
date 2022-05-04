@@ -8,8 +8,7 @@ This tool can be used to measure the performance of the architecture of a
 CPU independent of its clock rate. 
 
 This code has been tested on Windows and Linux using LLVM clang. g++ might 
-also work. MSVC is not supported. Processors older than Intel Pentium are not
-supported.
+also work. MSVC is not supported. An x86-64 processor is required.
 
 ## Sample output
 ### Sample 1
@@ -135,9 +134,10 @@ It might not be easy to interpret these results. One could infer that,
 more CPU cores allow the CPU to interleave execution of instructions that don't
 depend on one another and perform them faster. This can be seen from smaller
 measurement results for CPUs with 8-12 cores than those with only two. This 
-effect might be countered by removing listing repetitions. This way, the 
-concurrency fences at the beginning and end of each run cycle might help.
-We can increase the number of run repetitions to get a better average instead.
+effect might be countered by designing the measurement listing such that every
+instruction depends on the result of the last one. This way, the processor
+will have less opportunity for interleaving independent instructions and 
+the instructions will more likely be executed sequentially.
 
 ## Details
 The functions that measure the runtime of a single CPU instruction are declared 

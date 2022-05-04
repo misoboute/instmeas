@@ -51,7 +51,8 @@ int main()
     std::cout << "Beginning measurement...\n\n";
 
     COUT_MEASURE(IDIV_R64);
-    COUT_MEASURE(XOR_R_R64);
+    COUT_MEASURE(XOR_R64);
+    COUT_MEASURE(XOR_I32_R64);
     COUT_MEASURE(MOV_R_I64);
     COUT_MEASURE(INC_R64);
     COUT_MEASURE(DEC_R64);

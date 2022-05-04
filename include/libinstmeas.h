@@ -11,16 +11,19 @@ namespace funcs
 namespace internal
 {
 
-INSTRUCTION_MEASUREMENT_DEFINE(XOR_R64_SAL_I_R64_IDIV64, 
+INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64_XOR_R64_IDIV64, 
     "xorq %%rdx,%%rdx\n\txorq $0x7fffffff,%%rax\n\tidiv %%rbx",
     "mov $25393642,%%rax\n\tmov $5039,%%rbx",
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(MOV2_I_R64_XOR_R_R64, 
-    "mov $39916801,%%rax\n\tmov $5039,%%rbx\n\txor %%rdx,%%rdx", ,
-    INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
+INSTRUCTION_MEASUREMENT_DEFINE(MOV_I_R64, 
+    "mov $0x8d13fd2583b74e96,%%rax", , , 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(XOR_R_R64, "xor %%rdx,%%rax", , , 1, 1)
+INSTRUCTION_MEASUREMENT_DEFINE(XOR_R64, 
+    "xorq %%rdx,%%rdx", "movq $0xbbbbbbbbbbbbbbbb,%%rdx", , 1, 1)
+
+INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64, 
+    "xorq $0x7fffffff,%%rax", "movq $0xbbbbbbbbbbbbbbbb,%%rax", , 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rdx", "xor %%rdx,%%rdx", , 1, 1)
 
@@ -51,18 +54,24 @@ INSTRUCTION_MEASUREMENT_DEFINE(FLDPI_FSTP, "fldpi\n\tfstp %%st(0)", ,
 
 float IDIV_R64()
 {
-    return INSTRUCTION_MEASUREMENT_DO(XOR_R64_SAL_I_R64_IDIV64);
+    return INSTRUCTION_MEASUREMENT_DO(XOR_I32_R64_XOR_R64_IDIV64) -
+        INSTRUCTION_MEASUREMENT_DO(XOR_R64) -
+        INSTRUCTION_MEASUREMENT_DO(XOR_I32_R64);
 }
 
-float XOR_R_R64()
+float XOR_R64()
 {
-    return INSTRUCTION_MEASUREMENT_DO(XOR_R_R64);
+    return INSTRUCTION_MEASUREMENT_DO(XOR_R64);
+}
+
+float XOR_I32_R64()
+{
+    return INSTRUCTION_MEASUREMENT_DO(XOR_I32_R64);
 }
 
 float MOV_R_I64()
 {
-    return (INSTRUCTION_MEASUREMENT_DO(MOV2_I_R64_XOR_R_R64) - 
-        INSTRUCTION_MEASUREMENT_DO(XOR_R_R64)) / 2;
+    return INSTRUCTION_MEASUREMENT_DO(MOV_I_R64);
 }
 
 float INC_R64()
