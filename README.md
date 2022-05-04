@@ -223,8 +223,8 @@ argument is the measurement name. This can be any valid C identifier.
 The second one is the assembly listing to be measured. The listings should be
 in the ATT dialect of assembly which used by `gas` by default. 
 The third argument should be left empty unless the listing modifies any 
-registers other than `RAX` and `RDX`. In such cases, the third argument 
-should be an invocation of the `INSTRUCTION_MEASUREMENT_REG_CLOBBER` 
+registers other than `RAX` and `RDX`. In such cases, the third 
+argument should be an invocation of the `INSTRUCTION_MEASUREMENT_REG_CLOBBER` 
 macro. For example, since the measurement `MOV2_I_R64_XOR_R_R64_IDIV64` in the
 examples above uses and modifies the registers `RAX`, `RBX`, and `RDX`, it 
 will look like this:
