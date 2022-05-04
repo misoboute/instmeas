@@ -2,25 +2,6 @@
 
 #include <cstdint>
 
-#define INSTRUCTION_MEASUREMENT_MARK_START  "\t" \
-    "mfence          \n\t"   \
-    "lfence          \n\t"   \
-    "rdtsc           \n\t"   \
-    "lfence          \n\t"   \
-    "shl $32, %%rdx  \n\t"   \
-    "or %%rax, %%rdx \n\t"   \
-    "mov %%rdx, %0   \n\t"
-
-#define INSTRUCTION_MEASUREMENT_MARK_END  "\t" \
-    "mfence          \n\t"   \
-    "lfence          \n\t"   \
-    "rdtsc           \n\t"   \
-    "lfence          \n\t"   \
-    "shl $32, %%rdx  \n\t"   \
-    "or %%rax, %%rdx \n\t"   \
-    "xchg %%rdx, %0  \n\t"   \
-    "sub %%rdx, %0   \n\t"
-
 #define IM_REP1(X) X "\n\t"
 #define IM_REP2(X) IM_REP1(X) IM_REP1(X)
 #define IM_REP4(X) IM_REP2(X) IM_REP2(X)
@@ -43,7 +24,7 @@
 #define IM_REP512K(X) IM_REP256K(X) IM_REP256K(X)
 #define IM_REP1M(X) IM_REP512K(X) IM_REP512K(X)
 
-// By default each instruction listing is repeated 1024 before being 
+// By default each instruction listing is repeated 1024 before being
 // surrounded by timing markers. Then the measured time is divided by 1024
 // to compute the average time for each single run of the listing.
 // To disable this repetition, define this macro before including the header.
@@ -102,38 +83,54 @@
 #define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 14)
 #endif
 
-#define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, CLOBBER,    \
-    MEMSIZE1, MEMSIZE2)                                                 \
-float InstructionMeasurementFunc##NAME()                                \
-{                                                                       \
-    constexpr const int64_t numMeasurements =                           \
-        INSTRUCTION_MEASUREMENT_NUM_RUN_REPS;                           \
-    int64_t totalTicks = 0;                                             \
-    alignas(16) char mem1[MEMSIZE1] { 0 };                              \
-    alignas(16) char mem2[MEMSIZE2] { 0 };                              \
-    for (auto i = 0; i < numMeasurements; ++i)                          \
-    {                                                                   \
-        uint64_t ticks = 0;                                             \
-        asm volatile (                                                  \
-            INSTRUCTION_MEASUREMENT_MARK_START                          \
-            INSTRUCTION_MEASUREMENT_MARK_END                            \
-            : "=r" (ticks)                                              \
-            :                                                           \
-            : "rax", "rdx");                                            \
-        totalTicks -= ticks;                                            \
-        asm volatile (                                                  \
-            INSTRUCTION_MEASUREMENT_MARK_START                          \
-            /* Instructions to measure start here */                    \
-            INSTRUCTION_MEASUREMENT_INSERT_LISTING(INST_TEMPLATE)       \
-            /* Instructions to measure end here */                      \
-            INSTRUCTION_MEASUREMENT_MARK_END                            \
-            : "=r" (ticks), [mem1] "=m" (mem1), [mem2] "=m" (mem2)      \
-            : [addrMem1] "r" (&mem1), [addrMem2] "r" (&mem2)            \
-            : "rax", "rdx" CLOBBER);                                    \
-        totalTicks += ticks;                                            \
-    }                                                                   \
-    return static_cast<float>(totalTicks) / numMeasurements /           \
-        INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS;                       \
+#define INSTRUCTION_MEASUREMENT_MARK_START  \
+    "mfence                     \n\t"   \
+    "lfence                     \n\t"   \
+    "rdtsc                      \n\t"   \
+    "lfence                     \n\t"   \
+    "shl $32, %%rdx             \n\t"   \
+    "or %%rax, %%rdx            \n\t"   \
+    "mov %%rdx, %[ticks]   \n\t"
+
+#define INSTRUCTION_MEASUREMENT_MARK_END    \
+    "mfence                     \n\t"   \
+    "lfence                     \n\t"   \
+    "rdtsc                      \n\t"   \
+    "lfence                     \n\t"   \
+    "shl $32, %%rdx             \n\t"   \
+    "or %%rax, %%rdx            \n\t"   \
+    "xchg %%rdx, %[ticks]       \n\t"   \
+    "sub %%rdx, %[ticks]        \n\t"
+
+#define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, INIT, CLOBBER,     \
+    MEMSIZE1, MEMSIZE2)                                                        \
+float InstructionMeasurementFunc##NAME()                                       \
+{                                                                              \
+    int64_t totalTicks = 0;                                                    \
+    int64_t ticks = 0;                                                         \
+    int64_t counter = INSTRUCTION_MEASUREMENT_NUM_RUN_REPS;                    \
+    alignas(16) char mem1[MEMSIZE1] { 0 };                                     \
+    alignas(16) char mem2[MEMSIZE2] { 0 };                                     \
+    asm volatile (                                                             \
+        INIT "\n"                                                              \
+        "%=:\t"                                                                \
+        INSTRUCTION_MEASUREMENT_MARK_START                                     \
+        INSTRUCTION_MEASUREMENT_INSERT_LISTING(INST_TEMPLATE)                  \
+        INSTRUCTION_MEASUREMENT_MARK_END                                       \
+        "add %[ticks], %[totalTicks]        \n\t"                              \
+        INSTRUCTION_MEASUREMENT_MARK_START                                     \
+        INSTRUCTION_MEASUREMENT_MARK_END                                       \
+        "sub %[ticks], %[totalTicks]        \n\t"                              \
+        "decq %[counter]                    \n\t"                              \
+        "jnz %=b"                                                              \
+        : [totalTicks] "=rm" (totalTicks), [ticks] "=r" (ticks),               \
+            [counter] "=rm" (counter),                                         \
+            [mem1] "=m" (mem1), [mem2] "=m" (mem2)                             \
+        : [addrMem1] "r" (&mem1), [addrMem2] "r" (&mem2)                       \
+        : "rax", "rdx" CLOBBER);                                               \
+    return static_cast<float>(totalTicks) /                                    \
+        INSTRUCTION_MEASUREMENT_NUM_RUN_REPS /                                 \
+        INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS;                              \
 }
 
 #define INSTRUCTION_MEASUREMENT_DO(NAME)   \
