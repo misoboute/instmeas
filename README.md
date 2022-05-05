@@ -16,18 +16,16 @@ This is the output of the code run on the processor
 _Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz_, Windows 10, clang 12
 
 ```
-Beginning measurement...
-
-IDIV_R64:    20.06
-XOR_R_R64:    0.27
-MOV_R_I64:    0.32
-INC_R64:      0.85
+IDIV_R64:    34.97
+XOR_R64:      0.27
+XOR_I32_R64:  0.88
+MOV_R_I64:    0.54
+INC_R64:      0.90
 DEC_R64:      0.85
-INC_M64:      4.68
-DEC_M64:      4.66
-INC_M32:      4.66
-DEC_M32:      4.65
-FSQRT:        3.38
+INC_M64:      4.58
+DEC_M64:      4.62
+INC_M32:      4.64
+DEC_M32:      4.63
 
 Finished measurement!
 ```
