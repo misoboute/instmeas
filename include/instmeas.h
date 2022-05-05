@@ -92,7 +92,7 @@
     "lfence                     \n\t"   \
     "shl $32, %%rdx             \n\t"   \
     "or %%rax, %%rdx            \n\t"   \
-    "mov %%rdx, %[ticks]        \n\t"
+    "movq %%rdx, %[ticks]       \n\t"
 
 #define INSTRUCTION_MEASUREMENT_MARK_END    \
     "mfence                     \n\t"   \
@@ -101,8 +101,8 @@
     "lfence                     \n\t"   \
     "shl $32, %%rdx             \n\t"   \
     "or %%rax, %%rdx            \n\t"   \
-    "xchg %%rdx, %[ticks]       \n\t"   \
-    "sub %%rdx, %[ticks]        \n\t"
+    "xchgq %%rdx, %[ticks]      \n\t"   \
+    "subq %%rdx, %[ticks]       \n\t"
 
 #define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, INIT, CLOBBER,     \
     MEMSIZE1, MEMSIZE2)                                                        \
@@ -119,14 +119,14 @@ float InstructionMeasurementFunc##NAME()                                       \
         INSTRUCTION_MEASUREMENT_MARK_START                                     \
         INSTRUCTION_MEASUREMENT_INSERT_LISTING(INST_TEMPLATE)                  \
         INSTRUCTION_MEASUREMENT_MARK_END                                       \
-        "add %[ticks], %[totalTicks]        \n\t"                              \
+        "addq %[ticks], %[totalTicks]        \n\t"                             \
         INSTRUCTION_MEASUREMENT_MARK_START                                     \
         INSTRUCTION_MEASUREMENT_MARK_END                                       \
-        "sub %[ticks], %[totalTicks]        \n\t"                              \
-        "decq %[counter]                    \n\t"                              \
+        "subq %[ticks], %[totalTicks]        \n\t"                             \
+        "decq %[counter]                     \n\t"                             \
         "jnz %=b"                                                              \
-        : [totalTicks] "=rm" (totalTicks), [ticks] "=r" (ticks),               \
-            [counter] "=rm" (counter),                                         \
+        : [totalTicks] "+r" (totalTicks), [ticks] "+r" (ticks),                \
+            [counter] "+r" (counter),                                          \
             [mem1] "=m" (mem1), [mem2] "=m" (mem2)                             \
         : [addrMem1] "r" (&mem1), [addrMem2] "r" (&mem2)                       \
         : "rax", "rdx" CLOBBER);                                               \
