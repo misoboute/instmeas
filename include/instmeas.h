@@ -24,12 +24,12 @@
 #define IM_REP512K(X) IM_REP256K(X) IM_REP256K(X)
 #define IM_REP1M(X) IM_REP512K(X) IM_REP512K(X)
 
-// By default each instruction listing is repeated 1024 before being
+// By default each instruction listing is repeated 2^12 times before being
 // surrounded by timing markers. Then the measured time is divided by 1024
 // to compute the average time for each single run of the listing.
 // To disable this repetition, define this macro before including the header.
 #ifndef INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS
-#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1 << 14)
+#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1 << 12)
 #endif
 
 #if INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS == 1
@@ -80,7 +80,7 @@
 #endif
 
 #ifndef INSTRUCTION_MEASUREMENT_NUM_RUN_REPS
-#define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 14)
+#define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 12)
 #endif
 
 #define INSTRUCTION_MEASUREMENT_MARK_START  \
@@ -90,7 +90,7 @@
     "lfence                     \n\t"   \
     "shl $32, %%rdx             \n\t"   \
     "or %%rax, %%rdx            \n\t"   \
-    "mov %%rdx, %[ticks]   \n\t"
+    "mov %%rdx, %[ticks]        \n\t"
 
 #define INSTRUCTION_MEASUREMENT_MARK_END    \
     "mfence                     \n\t"   \

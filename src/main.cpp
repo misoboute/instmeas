@@ -4,9 +4,9 @@
 #include <regex>
 #include <sstream>
 
-// Uncommment the following lines to disable listing repetition
-// #define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS 1
-// #define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 24)
+// Uncommment the following lines to change repetitions
+// #define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1 << 12)
+// #define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 12)
 
 #include "libinstmeas.h"
 
@@ -60,7 +60,7 @@ int main()
     COUT_MEASURE(DEC_M64);
     COUT_MEASURE(INC_M32);
     COUT_MEASURE(DEC_M32);
-    COUT_MEASURE(FSQRT);
+    // COUT_MEASURE(FSQRT); // Beat the processor serialization then uncomment
 
     std::cout << "\nFinished measurement!" << std::endl;
     return 0;

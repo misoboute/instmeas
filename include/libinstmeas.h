@@ -27,19 +27,20 @@ INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64,
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rdx", "xor %%rdx,%%rdx", , 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(DEC_R64, "dec %%rdx", "xor %%rdx,%%rdx", , 1, 1)
+INSTRUCTION_MEASUREMENT_DEFINE(DEC_R64, 
+    "dec %%rdx", "movq $0xffffffff,%%rdx", , 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_M64, 
     "incq %[mem1]", "movq $0,%[mem1]", , 8, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_M64, 
-    "decq %[mem1]", "movq $0,%[mem1]", , 8, 1)
+    "decq %[mem1]", "movq $0x7fffffff,%[mem1]", , 8, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_M32, 
     "incl %[mem1]", "movl $0,%[mem1]", , 4, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_M32, 
-    "decl %[mem1]", "movl $0,%[mem1]", , 4, 1)
+    "decl %[mem1]", "movl $0x7fffffff,%[mem1]", , 4, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(FLDPI, "fldpi", , , 1, 1)
 

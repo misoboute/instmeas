@@ -95,15 +95,16 @@ Processor #0 model name: AMD EPYC 7R32
 Processor #1 model name: AMD EPYC 7R32
 Beginning measurement...
 
-IDIV_R64:    32.25
-XOR_R_R64:    0.49
-MOV_R_I64:    2.28
-INC_R64:      0.96
-DEC_R64:      1.00
-INC_M64:     11.81
-DEC_M64:     11.00
-INC_M32:     16.32
-DEC_M32:     11.90
+IDIV_R64:    33.49
+XOR_R64:      0.36
+XOR_I32_R64:  2.21
+MOV_R_I64:    1.23
+INC_R64:      1.54
+DEC_R64:      0.90
+INC_M64:      6.18
+DEC_M64:      7.58
+INC_M32:      6.82
+DEC_M32:      7.48
 
 Finished measurement!
 ```
@@ -112,20 +113,42 @@ Finished measurement!
 On [godbolt](https://godbolt.org/):
 
 ```
+Processor #0 model name: Intel(R) Xeon(R) Platinum 8275CL CPU @ 3.00GHz
+Processor #1 model name: Intel(R) Xeon(R) Platinum 8275CL CPU @ 3.00GHz
+Beginning measurement...
+
+IDIV_R64:    35.41
+XOR_R64:      0.35
+XOR_I32_R64:  0.87
+MOV_R_I64:    0.65
+INC_R64:      0.86
+DEC_R64:      0.87
+INC_M64:      4.83
+DEC_M64:      4.81
+INC_M32:      4.66
+DEC_M32:      4.63
+
+Finished measurement!
+```
+
+### Sample 6
+On [godbolt](https://godbolt.org/):
+
+```
 Processor #0 model name: Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz
 Processor #1 model name: Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz
 Beginning measurement...
 
-IDIV_R64:    45.95
-XOR_R_R64:    0.28
-MOV_R_I64:    0.34
-INC_R64:      6.49
+IDIV_R64:    38.06
+XOR_R64:      0.37
+XOR_I32_R64:  0.91
+MOV_R_I64:    0.91
+INC_R64:      0.90
 DEC_R64:      0.89
-INC_M64:     10.44
-DEC_M64:      5.90
-INC_M32:      9.47
-DEC_M32:     10.44
-FSQRT:        3.97
+INC_M64:      4.75
+DEC_M64:      4.74
+INC_M32:      4.82
+DEC_M32:      4.74
 
 Finished measurement!
 ```
