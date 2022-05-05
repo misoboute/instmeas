@@ -29,7 +29,13 @@
 // to compute the average time for each single run of the listing.
 // To disable this repetition, define this macro before including the header.
 #ifndef INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS
-#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1 << 12)
+#define INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS (1 << 13)
+#endif
+
+// The number of times each measurement cycle is executed and subsequently
+// averaged
+#ifndef INSTRUCTION_MEASUREMENT_NUM_RUN_REPS
+#define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 13)
 #endif
 
 #if INSTRUCTION_MEASUREMENT_NUM_LISTING_REPS == 1
@@ -77,10 +83,6 @@
 #else
 #error "Invalid value for INSTRUCTION_MEASUREMENT_REPEAT_LISTING acceptable \
     values are (2^p) where p >= 0 && p <= 20"
-#endif
-
-#ifndef INSTRUCTION_MEASUREMENT_NUM_RUN_REPS
-#define INSTRUCTION_MEASUREMENT_NUM_RUN_REPS (1 << 12)
 #endif
 
 #define INSTRUCTION_MEASUREMENT_MARK_START  \
