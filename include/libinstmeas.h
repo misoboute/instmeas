@@ -25,10 +25,12 @@ INSTRUCTION_MEASUREMENT_DEFINE(XOR_R64,
 INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64, 
     "xorq $0x7fffffff,%%rax", "movq $0xbbbbbbbbbbbbbbbb,%%rax", , 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rdx", "xor %%rdx,%%rdx", , 1, 1)
+INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rbx", "xor %%rbx,%%rbx", 
+    INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_R64, 
-    "dec %%rdx", "movq $0xffffffff,%%rdx", , 1, 1)
+    "dec %%rbx", "movq $0xffffffff,%%rbx", 
+    INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_M64, 
     "incq %[mem1]", "movq $0,%[mem1]", , 8, 1)
