@@ -58,29 +58,29 @@ Finished measurement!
 ```
 
 ### Sample 3
-On [onlinegdb](https://onlinegdb.com/ZbF7Av0hyU):
+On [onlinegdb](https://onlinegdb.com/ciK8AxYRZ):
 
 ```
-Processor #0 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #1 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #2 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #3 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #4 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #5 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #6 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
-Processor #7 model name: Intel(R) Xeon(R) CPU @ 2.80GHz
+Processor #0 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #1 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #2 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #3 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #4 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #5 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #6 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
+Processor #7 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
 Beginning measurement...
 
-IDIV_R64:    20.56
-XOR_R_R64:    0.27
-MOV_R_I64:    0.30
-INC_R64:      0.85
-DEC_R64:      0.83
-INC_M64:      4.54
-DEC_M64:      4.56
-INC_M32:      4.55
-DEC_M32:      4.58
-FSQRT:        4.10
+IDIV_R64:    30.64
+XOR_R64:      0.23
+XOR_I32_R64:  0.75
+MOV_R_I64:    0.47
+INC_R64:      0.75
+DEC_R64:      0.75
+INC_M64:      4.09
+DEC_M64:      4.09
+INC_M32:      4.10
+DEC_M32:      4.10
 
 Finished measurement!
 ```
@@ -93,16 +93,16 @@ Processor #0 model name: AMD EPYC 7R32
 Processor #1 model name: AMD EPYC 7R32
 Beginning measurement...
 
-IDIV_R64:    33.49
-XOR_R64:      0.36
-XOR_I32_R64:  2.21
-MOV_R_I64:    1.23
-INC_R64:      1.54
-DEC_R64:      0.90
-INC_M64:      6.18
-DEC_M64:      7.58
-INC_M32:      6.82
-DEC_M32:      7.48
+IDIV_R64:    18.54
+XOR_R64:      0.35
+XOR_I32_R64:  0.94
+MOV_R_I64:    0.87
+INC_R64:      0.86
+DEC_R64:      0.87
+INC_M64:      6.02
+DEC_M64:      5.99
+INC_M32:      6.10
+DEC_M32:      6.07
 
 Finished measurement!
 ```
@@ -147,6 +147,28 @@ INC_M64:      4.75
 DEC_M64:      4.74
 INC_M32:      4.82
 DEC_M32:      4.74
+
+Finished measurement!
+```
+
+### Sample 7
+On [godbolt](https://godbolt.org/):
+
+```
+Processor #0 model name: Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
+Processor #1 model name: Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz
+Beginning measurement...
+
+IDIV_R64:    11.63
+XOR_R64:      0.26
+XOR_I32_R64:  0.85
+MOV_R_I64:    0.53
+INC_R64:      0.85
+DEC_R64:      0.89
+INC_M64:      6.34
+DEC_M64:      6.36
+INC_M32:      6.34
+DEC_M32:      6.30
 
 Finished measurement!
 ```
