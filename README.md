@@ -16,16 +16,19 @@ This is the output of the code run on the processor
 _Intel(R) Xeon(R) W-2135 CPU @ 3.70GHz_, Windows 10, clang 12
 
 ```
-IDIV_R64:    34.97
+Beginning measurement...
+
+IDIV_R64:    35.47
 XOR_R64:      0.27
-XOR_I32_R64:  0.88
+XOR_I32_R64:  0.86
 MOV_R_I64:    0.54
-INC_R64:      0.90
-DEC_R64:      0.85
+INC_R64:      0.87
+DEC_R64:      0.87
 INC_M64:      4.58
-DEC_M64:      4.62
-INC_M32:      4.64
-DEC_M32:      4.63
+DEC_M64:      4.64
+INC_M32:      4.71
+DEC_M32:      4.60
+FMUL_ST_ST: 324.62
 
 Finished measurement!
 ```
@@ -58,7 +61,7 @@ Finished measurement!
 ```
 
 ### Sample 3
-On [onlinegdb](https://onlinegdb.com/ciK8AxYRZ):
+On [onlinegdb](https://onlinegdb.com/GFKOaqkRt):
 
 ```
 Processor #0 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
@@ -71,16 +74,17 @@ Processor #6 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
 Processor #7 model name: Intel(R) Xeon(R) CPU @ 2.00GHz
 Beginning measurement...
 
-IDIV_R64:    30.64
+IDIV_R64:    30.73
 XOR_R64:      0.23
 XOR_I32_R64:  0.75
 MOV_R_I64:    0.47
 INC_R64:      0.75
 DEC_R64:      0.75
-INC_M64:      4.09
-DEC_M64:      4.09
-INC_M32:      4.10
+INC_M64:      4.08
+DEC_M64:      4.13
+INC_M32:      4.09
 DEC_M32:      4.10
+FMUL_ST_ST: 281.40
 
 Finished measurement!
 ```
@@ -93,16 +97,17 @@ Processor #0 model name: AMD EPYC 7R32
 Processor #1 model name: AMD EPYC 7R32
 Beginning measurement...
 
-IDIV_R64:    18.54
-XOR_R64:      0.35
-XOR_I32_R64:  0.94
-MOV_R_I64:    0.87
-INC_R64:      0.86
-DEC_R64:      0.87
-INC_M64:      6.02
-DEC_M64:      5.99
-INC_M32:      6.10
-DEC_M32:      6.07
+IDIV_R64:    17.63
+XOR_R64:      0.45
+XOR_I32_R64:  1.27
+MOV_R_I64:    1.96
+INC_R64:      1.54
+DEC_R64:      1.39
+INC_M64:      9.70
+DEC_M64:     11.03
+INC_M32:     18.06
+DEC_M32:      9.69
+FMUL_ST_ST:   5.31
 
 Finished measurement!
 ```
@@ -180,7 +185,13 @@ measurement results for CPUs with 8-12 cores than those with only two. This
 effect might be countered by designing the measurement listing such that every
 instruction depends on the result of the last one. This way, the processor
 will have less opportunity for interleaving independent instructions and 
-the instructions will more likely be executed sequentially.
+the instructions will more likely be executed sequentially. The numbers might 
+not be directly comparable across different processors, but would be a good 
+measure of how a certain instruction performs in comparison with the other
+instructions on the same processor.
+One insight so far _might_ be that FPU operations take much longer than integer
+ops.
+Also, AMD RDTSC doesn't seems to work as expected.
 
 ## Details
 The functions that measure the runtime of a single CPU instruction are declared 

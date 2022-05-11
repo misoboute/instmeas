@@ -60,6 +60,7 @@ int main()
     COUT_MEASURE(DEC_M64);
     COUT_MEASURE(INC_M32);
     COUT_MEASURE(DEC_M32);
+    COUT_MEASURE(FMUL_ST_ST);
     // COUT_MEASURE(FSQRT); // Beat the processor serialization then uncomment
 
     std::cout << "\nFinished measurement!" << std::endl;
