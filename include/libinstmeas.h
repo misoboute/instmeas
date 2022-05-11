@@ -13,44 +13,44 @@ namespace internal
 
 INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64_XOR_R64_IDIV64, 
     "xorq %%rdx,%%rdx\n\txorq $0x7fffffff,%%rax\n\tidiv %%rbx",
-    "mov $25393642,%%rax\n\tmov $5039,%%rbx",
+    "mov $25393642,%%rax\n\tmov $5039,%%rbx", , 
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(MOV_I_R64, 
-    "mov $0x8d13fd2583b74e96,%%rax", , , 1, 1)
+    "mov $0x8d13fd2583b74e96,%%rax", , , , 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(XOR_R64, 
-    "xorq %%rdx,%%rdx", "movq $0xbbbbbbbbbbbbbbbb,%%rdx", , 1, 1)
+    "xorq %%rdx,%%rdx", "movq $0xbbbbbbbbbbbbbbbb,%%rdx", , , 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(XOR_I32_R64, 
-    "xorq $0x7fffffff,%%rax", "movq $0xbbbbbbbbbbbbbbbb,%%rax", , 1, 1)
+    "xorq $0x7fffffff,%%rax", "movq $0xbbbbbbbbbbbbbbbb,%%rax", , , 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rbx", "xor %%rbx,%%rbx", 
+INSTRUCTION_MEASUREMENT_DEFINE(INC_R64, "inc %%rbx", "xor %%rbx,%%rbx", , 
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_R64, 
-    "dec %%rbx", "movq $0xffffffff,%%rbx", 
+    "dec %%rbx", "movq $0xffffffff,%%rbx", , 
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("rbx"), 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_M64, 
-    "incq %[mem1]", "movq $0,%[mem1]", , 8, 1)
+    "incq %[mem1]", "movq $0,%[mem1]", , , 8, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_M64, 
-    "decq %[mem1]", "movq $0x7fffffff,%[mem1]", , 8, 1)
+    "decq %[mem1]", "movq $0x7fffffff,%[mem1]", , , 8, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(INC_M32, 
-    "incl %[mem1]", "movl $0,%[mem1]", , 4, 1)
+    "incl %[mem1]", "movl $0,%[mem1]", , , 4, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(DEC_M32, 
-    "decl %[mem1]", "movl $0x7fffffff,%[mem1]", , 4, 1)
+    "decl %[mem1]", "movl $0x7fffffff,%[mem1]", , , 4, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(FLDPI, "fldpi", , , 1, 1)
+INSTRUCTION_MEASUREMENT_DEFINE(FLDPI, "fldpi", , , , 1, 1)
 
 INSTRUCTION_MEASUREMENT_DEFINE(FLDPI_FSQRT_FSTP, 
-    "fldpi\n\tfsqrt\n\tfstp %%st(0)", ,
+    "fldpi\n\tfsqrt\n\tfstp %%st(0)", , ,
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("st"), 1, 1)
 
-INSTRUCTION_MEASUREMENT_DEFINE(FLDPI_FSTP, "fldpi\n\tfstp %%st(0)", ,
+INSTRUCTION_MEASUREMENT_DEFINE(FLDPI_FSTP, "fldpi\n\tfstp %%st(0)", , ,
     INSTRUCTION_MEASUREMENT_REG_CLOBBER("st"), 1, 1)
 
 } // namespace internal

@@ -104,8 +104,8 @@
     "xchgq %%rdx, %[ticks]      \n\t"   \
     "subq %%rdx, %[ticks]       \n\t"
 
-#define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, INIT, CLOBBER,     \
-    MEMSIZE1, MEMSIZE2)                                                        \
+#define INSTRUCTION_MEASUREMENT_DEFINE(NAME, INST_TEMPLATE, INIT, FINAL,       \
+     CLOBBER, MEMSIZE1, MEMSIZE2)                                              \
 float InstructionMeasurementFunc##NAME()                                       \
 {                                                                              \
     int64_t totalTicks = 0;                                                    \
@@ -124,7 +124,8 @@ float InstructionMeasurementFunc##NAME()                                       \
         INSTRUCTION_MEASUREMENT_MARK_END                                       \
         "subq %[ticks], %[totalTicks]        \n\t"                             \
         "decq %[counter]                     \n\t"                             \
-        "jnz %=b"                                                              \
+        "jnz %=b\n\t"                                                          \
+        FINAL                                                                  \
         : [totalTicks] "+r" (totalTicks), [ticks] "+r" (ticks),                \
             [counter] "+r" (counter),                                          \
             [mem1] "=m" (mem1), [mem2] "=m" (mem2)                             \
